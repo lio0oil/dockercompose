@@ -17,11 +17,11 @@ services:
       - TZ=Asia/Tokyo
 
   python:
-    build: # ビルド設定
+    build:
       context: .
-      dockerfile: ./dockerfile_ubuntu_python
+      dockerfile: ./dockerfile_ubuntu_python_dev
     image: ubuntu_python3.10
     container_name: python
     restart: always
-    tty: true
+    tty: true #終了させないため
 
