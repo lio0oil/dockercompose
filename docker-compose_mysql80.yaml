@@ -24,4 +24,5 @@ services:
     container_name: python
     restart: always
     tty: true #終了させないため
-
+    volumes:
+      - ../../docker/volume/work:/work
