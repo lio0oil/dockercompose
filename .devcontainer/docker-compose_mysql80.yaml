@@ -23,6 +23,7 @@ services:
     image: ubuntu_python3.10
     container_name: python
     restart: always
-    tty: true #終了させないため
     volumes:
-      - ../../docker/volume/work:/work
+      - ../workspaces:/workspaces:cached
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"

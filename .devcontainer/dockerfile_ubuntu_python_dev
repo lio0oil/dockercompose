@@ -1,0 +1,30 @@
+FROM ubuntu:22.04
+
+RUN apt-get update -y \
+    && apt-get -y --no-install-recommends install python3.10 python3-pip python3.10-venv git sudo \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG USERNAME=vscode
+ARG GROUPNAME=vscode
+ARG UID=1000
+ARG GID=1000
+ARG PASSWORD=vscode
+
+RUN groupadd -g $GID $GROUPNAME && \
+    useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
+    echo $USERNAME:$PASSWORD | chpasswd && \
+    echo "$USERNAME   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+ARG HOME_DIR=/workspaces
+RUN mkdir -p $HOME_DIR
+RUN chown -R $USERNAME $HOME_DIR
+
+# 作成したユーザーに切り替える
+USER ${USERNAME}
+
+RUN git config --global user.name hoge \
+    && git config --global user.email hoge@hoge.com
+
+
+
