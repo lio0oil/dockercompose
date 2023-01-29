@@ -16,15 +16,13 @@ RUN groupadd -g $GID $GROUPNAME && \
     echo $USERNAME:$PASSWORD | chpasswd && \
     echo "$USERNAME   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-ARG HOME_DIR=/workspaces
-RUN mkdir -p $HOME_DIR
-RUN chown -R $USERNAME $HOME_DIR
-
 # 作成したユーザーに切り替える
 USER ${USERNAME}
 
 RUN git config --global user.name hoge \
     && git config --global user.email hoge@hoge.com
 
-
+ARG HOME_DIR=/home/vscode/workspaces
+RUN mkdir -p $HOME_DIR
+RUN chown -R $USERNAME $HOME_DIR
 

@@ -24,6 +24,6 @@ services:
     container_name: python
     restart: always
     volumes:
-      - ../workspaces:/workspaces:cached
+      - ../workspaces:/home/vscode/workspaces:cached
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
