@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 RUN apt-get update -y \
-    && apt-get -y --no-install-recommends install python3.10 python3-pip python3.10-venv git sudo \
+    && apt-get -y --no-install-recommends install python3.10 python3-pip python3.10-venv git unzip sudo curl iputils-ping net-tools dnsutils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -12,7 +12,7 @@ ARG GID=1000
 ARG PASSWORD=vscode
 
 RUN groupadd -g $GID $GROUPNAME && \
-    useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
+    useradd -m -s /bin/bash -l -u $UID -g $GID -G sudo $USERNAME && \
     echo $USERNAME:$PASSWORD | chpasswd && \
     echo "$USERNAME   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -22,7 +22,17 @@ USER ${USERNAME}
 RUN git config --global user.name hoge \
     && git config --global user.email hoge@hoge.com
 
-ARG HOME_DIR=/home/vscode/workspaces
-RUN mkdir -p $HOME_DIR
+ARG HOME_DIR=/home/vscode
+ARG WORKSPACE=/workspaces
+RUN mkdir -p $HOME_DIR$WORKSPACE
 RUN chown -R $USERNAME $HOME_DIR
+
+WORKDIR $HOME_DIR
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip \
+    && sudo ./aws/install \
+    && rm awscliv2.zip
+
+RUN pip install --no-cache-dir aws-mfa
 
