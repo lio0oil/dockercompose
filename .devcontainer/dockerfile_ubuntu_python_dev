@@ -25,7 +25,7 @@ RUN git config --global user.name hoge \
 ARG HOME_DIR=/home/vscode
 ARG WORKSPACE=/workspaces
 RUN mkdir -p $HOME_DIR$WORKSPACE
-RUN chown -R $USERNAME $HOME_DIR
+RUN sudo chown -R $USERNAME $HOME_DIR
 
 WORKDIR $HOME_DIR
 
